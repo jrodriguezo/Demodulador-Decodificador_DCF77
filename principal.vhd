@@ -7,7 +7,8 @@ entity principal is
  Port ( CLK : in STD_LOGIC; -- entrada de reloj
 			SIN : in STD_LOGIC; -- entrada de datos
 			AN : out STD_LOGIC_VECTOR (3 downto 0); -- control de displays
-			SEG7 : out STD_LOGIC_VECTOR (6 downto 0)); -- segmentos de displays
+			SEG7 : out STD_LOGIC_VECTOR (6 downto 0);
+			PULSADOR: in STD_LOGIC); -- segmentos de displays
 end principal;
 
 architecture a_principal of principal is
@@ -28,9 +29,11 @@ signal PGTQ_aux2 : STD_LOGIC;
 signal PLEQ_aux2 :  STD_LOGIC;
 signal  SUM :  STD_LOGIC;
 signal DATO_aux,CAPTUR_aux,VALID_aux: STD_LOGIC;
-signal Q_reg_desp_aux : STD_LOGIC_VECTOR (13 downto 0);
-signal Q_reg_validacion_aux: STD_LOGIC_VECTOR (13 downto 0);
+signal Q_reg_desp_aux : STD_LOGIC_VECTOR (27 downto 0);
+signal Q_reg_validacion_aux: STD_LOGIC_VECTOR (27 downto 0);
 signal salida_E: STD_LOGIC_VECTOR (15 downto 0);
+signal Q_mux_mejora: STD_LOGIC_VECTOR (13 downto 0);
+
 
 									
 
@@ -39,10 +42,10 @@ component gen_reloj_m
 		  CLK_M : out STD_LOGIC); -- Reloj de frecuencia dividida
 end component;
 
-component gen_reloj_v
- Port ( CLK : in  STD_LOGIC;    
-        CLK_V : out  STD_LOGIC);  
-end component;
+--component gen_reloj_v
+-- Port ( CLK : in  STD_LOGIC;    
+--        CLK_V : out  STD_LOGIC);  
+--end component;
 
 component reg_desp40
  Port ( SIN : in STD_LOGIC; -- Datos de entrada serie
@@ -74,12 +77,12 @@ component reg_desp
  Port ( SIN : in STD_LOGIC; -- Datos de entrada serie
  CLK : in STD_LOGIC; -- Reloj
  EN : in STD_LOGIC; -- Enable
- Q : out STD_LOGIC_VECTOR (13 downto 0)); -- Salida paralelo
+ Q : out STD_LOGIC_VECTOR (27 downto 0)); -- Salida paralelo
 end component;
 
 component registro
- Port ( ENTRADA : in STD_LOGIC_VECTOR (13 downto 0);
- SALIDA : out STD_LOGIC_VECTOR (13 downto 0);
+ Port ( ENTRADA : in STD_LOGIC_VECTOR (27 downto 0);
+ SALIDA : out STD_LOGIC_VECTOR (27 downto 0);
  EN : in STD_LOGIC; -- Enable
  CLK : in STD_LOGIC);
 end component;
@@ -103,6 +106,14 @@ component visualizacion
  AN : out STD_LOGIC_VECTOR (3 downto 0)); -- Activación individual
 end component;
 
+component MUX_mejora
+    Port ( E0 : in  STD_LOGIC_VECTOR (13 downto 0);
+           E1 : in  STD_LOGIC_VECTOR (13 downto 0);
+			  S: in STD_LOGIC;
+				Y: out STD_LOGIC_VECTOR (13 downto 0));
+end component;
+
+
 --component gen_signal 
 --    Port ( clk : in  STD_LOGIC;
 --           sal_dig : out  STD_LOGIC);
@@ -122,8 +133,11 @@ begin
 --   end process;
 --	
 
-salida_E <= STD_LOGIC_VECTOR('0'&Q_reg_validacion_aux(13 downto 11)&Q_reg_validacion_aux(10 downto 7)&'0'&Q_reg_validacion_aux(6 downto 4)&Q_reg_validacion_aux(3 downto 0));
-	
+salida_E <= STD_LOGIC_VECTOR('0'&Q_mux_mejora(13 downto 11)&Q_mux_mejora(10 downto 7)&'0'&Q_mux_mejora(6 downto 4)&Q_mux_mejora(3 downto 0));
+
+
+
+
 --	u_gen_signal: gen_signal port map(
 --										CLK => CLK,
 --										 sal_dig	 => sal_dig_aux);		
@@ -193,6 +207,13 @@ salida_E <= STD_LOGIC_VECTOR('0'&Q_reg_validacion_aux(13 downto 11)&Q_reg_valida
 									CLK => CLK,--CLK_V_aux,
 									SEG7 => SEG7,
 									AN=> AN);
+									
+	U10_mejora2: MUX_mejora port map(
+									E0 => Q_reg_validacion_aux(27 downto 14),
+									E1 => Q_reg_validacion_aux(13 downto 0),
+									S =>PULSADOR,
+									Y =>Q_mux_mejora
+									);
 			
 																	
 end a_principal;

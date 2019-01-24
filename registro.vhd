@@ -6,8 +6,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity registro is
 
-	Port(	 ENTRADA	: in STD_LOGIC_VECTOR (13 downto 0);
-			 SALIDA	: out STD_LOGIC_VECTOR (13 downto 0);
+	Port(	 ENTRADA	: in STD_LOGIC_VECTOR (27 downto 0);
+			 SALIDA	: out STD_LOGIC_VECTOR (27 downto 0);
 			 EN		: in STD_LOGIC;
 			 CLK		: in STD_LOGIC);
 			
