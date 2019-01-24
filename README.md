@@ -1,8 +1,12 @@
 # Demodulador-Decodificador_DCF77
 
-Cuenta desde 19:30 y acaba en 19:39 (incrementando cada "minuto" con 15 segundos)
+El DCF77 es una estación de radio que opera desde Alemania que emite una frecuencia patrón para difundir la hora. La señal emitida cubre en gran parte de España
 
-### Explicación básica del funcionamiento
+## Aplicación simplificada
+
+Cuenta desde 19:30 y acaba en 19:39 (incrementando cada "minuto" con 15 segundos) cuyo objetivo es visualizarlo en un display
+
+### Explicación básica del funcionamiento del código
   A la salida del circuito analógico presentamos una señal cuadrada entre 0 y 5 V que son los valores con las que podemos trabajar con la FPGA. 
   
   Con el “registro de desplazamiento de 40 bits”, capturamos bit a bit la señal a una frecuencia de 40 muestras/s  
