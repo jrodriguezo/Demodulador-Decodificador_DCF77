@@ -1,6 +1,6 @@
 # Demodulador-Decodificador_DCF77
 
-El DCF77 es una estación de radio que opera desde Alemania que emite una frecuencia patrón para difundir la hora. La señal emitida cubre en gran parte de España
+El DCF77 es una estación de radio que opera desde Alemania que emite una frecuencia patrón para difundir la hora. La señal emitida cubre gran parte de España
 
 ## Aplicación simplificada
 
